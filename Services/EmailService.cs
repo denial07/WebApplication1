@@ -52,8 +52,7 @@ namespace WebApplication1.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Failed to send email. Host={Host}, Port={Port}",
-                    smtpHost, smtpPort);
+                _logger.LogError(ex, "Failed to send email.");
                 throw;
             }
         }
