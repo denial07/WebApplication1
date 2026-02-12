@@ -1,0 +1,107 @@
+﻿@page
+@model PrivacyModel
+@{
+    ViewData["Title"] = "Privacy Policy";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-body p-4 p-lg-5">
+                    <div class="text-center mb-4">
+                        <div class="auth-icon mx-auto mb-3" style="width: 60px; height: 60px;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" viewBox="0 0 16 16">
+                                <path d="M5.338 1.59a61.44 61.44 0 0 0-2.837.856.481.481 0 0 0-.328.39c-.554 4.157.726 7.19 2.253 9.188a10.725 10.725 0 0 0 2.287 2.233c.346.244.652.42.893.533.12.057.218.095.293.118a.55.55 0 0 0 .101.025.615.615 0 0 0 .1-.025c.076-.023.174-.061.294-.118.24-.113.547-.29.893-.533a10.726 10.726 0 0 0 2.287-2.233c1.527-1.997 2.807-5.031 2.253-9.188a.48.48 0 0 0-.328-.39c-.651-.213-1.75-.56-2.837-.855C9.552 1.29 8.531 1.067 8 1.067c-.53 0-1.552.223-2.662.524zM5.072.56C6.157.265 7.31 0 8 0s1.843.265 2.928.56c1.11.3 2.229.655 2.887.87a1.54 1.54 0 0 1 1.044 1.262c.596 4.477-.787 7.795-2.465 9.99a11.775 11.775 0 0 1-2.517 2.453 7.159 7.159 0 0 1-1.048.625c-.28.132-.581.24-.829.24s-.548-.108-.829-.24a7.158 7.158 0 0 1-1.048-.625 11.777 11.777 0 0 1-2.517-2.453C1.928 10.487.545 7.169 1.141 2.692A1.54 1.54 0 0 1 2.185 1.43 62.456 62.456 0 0 1 5.072.56z"/>
+                            </svg>
+                        </div>
+                        <h1 class="h2 fw-bold">@ViewData["Title"]</h1>
+                        <p class="text-muted">Last updated: @DateTime.Now.ToString("MMMM d, yyyy")</p>
+                    </div>
+
+                    <div class="privacy-content">
+                        <h5 class="fw-semibold mt-4">🌾 About Fresh Farm Market</h5>
+                        <p>Fresh Farm Market is committed to protecting your privacy while providing you with the freshest organic produce and exceptional service. This privacy policy outlines how we collect, use, and protect your personal information.</p>
+
+                        <h5 class="fw-semibold mt-4">1. Information We Collect</h5>
+                        <p>To provide you with our membership service, we collect the following information:</p>
+                        <ul>
+                            <li><strong>Personal Information:</strong> Full name, email address, mobile number, and delivery address</li>
+                            <li><strong>Payment Information:</strong> Credit card details (encrypted and securely stored)</li>
+                            <li><strong>Profile Information:</strong> Your photo and personal bio (optional)</li>
+                            <li><strong>Account Security:</strong> Securely hashed password</li>
+                        </ul>
+
+                        <h5 class="fw-semibold mt-4">2. How We Use Your Information</h5>
+                        <p>Your information is used exclusively for:</p>
+                        <ul>
+                            <li>Processing and delivering your fresh produce orders</li>
+                            <li>Managing your membership account</li>
+                            <li>Sending order confirmations and delivery notifications</li>
+                            <li>Processing secure payments</li>
+                            <li>Improving our service based on your preferences</li>
+                        </ul>
+
+                        <h5 class="fw-semibold mt-4">3. Data Security</h5>
+                        <p>We take your security seriously and implement multiple layers of protection:</p>
+                        <ul>
+                            <li>AES-256 encryption for credit card information</li>
+                            <li>Secure password hashing using industry-standard algorithms</li>
+                            <li>HTTPS encryption for all data transmission</li>
+                            <li>Regular security audits and updates</li>
+                            <li>Secure cookie-based authentication</li>
+                        </ul>
+
+                        <h5 class="fw-semibold mt-4">4. Delivery Information</h5>
+                        <p>Your delivery address is used solely to ensure your fresh produce arrives at the correct location. We never share your address with third parties except our trusted delivery partners who are bound by confidentiality agreements.</p>
+
+                        <h5 class="fw-semibold mt-4">5. Payment Security</h5>
+                        <p>All payment information is encrypted using AES-256 encryption before being stored in our secure database. We comply with PCI DSS standards for handling payment card information.</p>
+
+                        <h5 class="fw-semibold mt-4">6. Your Rights</h5>
+                        <p>As a Fresh Farm Market member, you have the right to:</p>
+                        <ul>
+                            <li>Access and view your account information at any time</li>
+                            <li>Update your profile, delivery address, and preferences</li>
+                            <li>Change your password for enhanced security</li>
+                            <li>Request deletion of your account and associated data</li>
+                            <li>Opt out of marketing communications (order notifications will still be sent)</li>
+                        </ul>
+
+                        <h5 class="fw-semibold mt-4">7. Data Retention</h5>
+                        <p>We retain your membership information as long as your account is active. If you choose to close your account, your data will be securely deleted within 30 days, except where required by law for accounting or legal purposes.</p>
+
+                        <h5 class="fw-semibold mt-4">8. Third-Party Services</h5>
+                        <p>Fresh Farm Market uses trusted third-party services for:</p>
+                        <ul>
+                            <li>Payment processing (PCI DSS compliant)</li>
+                            <li>Delivery logistics</li>
+                            <li>Email notifications</li>
+                        </ul>
+                        <p>All third parties are contractually obligated to protect your data and may not use it for any other purpose.</p>
+
+                        <h5 class="fw-semibold mt-4">9. Children's Privacy</h5>
+                        <p>Our services are intended for adults aged 18 and over. We do not knowingly collect information from children under 18.</p>
+
+                        <h5 class="fw-semibold mt-4">10. Contact Us</h5>
+                        <p>If you have any questions about this privacy policy or how we handle your data, please contact us at:</p>
+                        <p><strong>Email:</strong> privacy@freshfarmmarket.com<br/>
+                        <strong>Phone:</strong> 1-800-FRESH-FM</p>
+
+                        <h5 class="fw-semibold mt-4">11. Policy Updates</h5>
+                        <p>We may update this privacy policy from time to time. Any changes will be posted on this page with an updated revision date. We encourage you to review this policy periodically.</p>
+                    </div>
+
+                    <div class="text-center mt-5 pt-4 border-top">
+                        <a asp-page="/Index" class="btn btn-primary">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="me-2" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
+                            </svg>
+                            Back to Home
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

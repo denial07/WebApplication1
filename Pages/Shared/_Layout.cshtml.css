@@ -1,0 +1,41 @@
+﻿/* Ensure the body takes up full height and removes default margin */
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+/* Ensure the page-wrapper takes up full height of the viewport */
+.page-wrapper {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Make sure main content expands to fill available space */
+main {
+    flex-grow: 1;
+}
+
+/* Styling for navbar and other elements */
+a.navbar-brand {
+    white-space: normal;
+    text-align: center;
+    word-break: break-all;
+}
+
+.border-top {
+    border-top: 1px solid #e5e5e5;
+}
+
+.border-bottom {
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.box-shadow {
+    box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+}
+
+button.accept-policy {
+    font-size: 1rem;
+    line-height: inherit;
+}

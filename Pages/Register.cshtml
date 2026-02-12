@@ -1,0 +1,234 @@
+﻿@page
+@model WebApplication1.Pages.RegisterModel
+@{
+    ViewData["Title"] = "Create Account";
+}
+
+<div class="auth-container">
+    <div class="auth-card auth-card-wide">
+        <div class="auth-header">
+            <div class="auth-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0Zm-2-6a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z"/>
+                    <path d="M8.256 14a4.474 4.474 0 0 1-.229-1.004H3c.001-.246.154-.986.832-1.664C4.484 10.68 5.711 10 8 10c.26 0 .507.009.74.025.226-.341.496-.65.804-.918C9.077 9.038 8.564 9 8 9c-5 0-6 3-6 4s1 1 1 1h5.256Z"/>
+                </svg>
+            </div>
+            <h1>Fresh Farm Market</h1>
+            <p class="auth-subtitle">Create your membership account</p>
+        </div>
+
+        <form method="post" enctype="multipart/form-data" id="registerForm">
+            <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+            <input type="hidden" asp-for="RecaptchaToken" id="recaptchaToken" />
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-floating mb-3">
+                        <input type="text" asp-for="RModel.FullName" class="form-control" id="fullName" placeholder="Full Name" />
+                        <label asp-for="RModel.FullName">Full Name</label>
+                        <span asp-validation-for="RModel.FullName" class="text-danger small"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-floating mb-3">
+                        <input type="email" asp-for="RModel.Email" class="form-control" id="email" placeholder="name@example.com" />
+                        <label asp-for="RModel.Email">Email Address</label>
+                        <span asp-validation-for="RModel.Email" class="text-danger small"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-floating mb-3">
+                        <input type="text" asp-for="RModel.CreditCardNo" class="form-control" id="creditCard" placeholder="Credit Card Number" />
+                        <label asp-for="RModel.CreditCardNo">Credit Card Number</label>
+                        <span asp-validation-for="RModel.CreditCardNo" class="text-danger small"></span>
+                        <small class="text-muted">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="me-1" viewBox="0 0 16 16">
+                                <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/>
+                            </svg>
+                            Encrypted & Secure
+                        </small>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-floating mb-3">
+                        <input type="tel" asp-for="RModel.MobileNo" class="form-control" id="mobile" placeholder="Mobile Number" />
+                        <label asp-for="RModel.MobileNo">Mobile Number</label>
+                        <span asp-validation-for="RModel.MobileNo" class="text-danger small"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Gender</label>
+                <div class="d-flex gap-4">
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" asp-for="RModel.Gender" value="Male" id="genderMale" />
+                        <label class="form-check-label" for="genderMale">Male</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" asp-for="RModel.Gender" value="Female" id="genderFemale" />
+                        <label class="form-check-label" for="genderFemale">Female</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" asp-for="RModel.Gender" value="Other" id="genderOther" />
+                        <label class="form-check-label" for="genderOther">Other</label>
+                    </div>
+                </div>
+                <span asp-validation-for="RModel.Gender" class="text-danger small"></span>
+            </div>
+
+            <div class="form-floating mb-3">
+                <textarea asp-for="RModel.DeliveryAddress" class="form-control" id="deliveryAddress" placeholder="Delivery Address" style="height: 80px"></textarea>
+                <label asp-for="RModel.DeliveryAddress">Delivery Address</label>
+                <span asp-validation-for="RModel.DeliveryAddress" class="text-danger small"></span>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-floating mb-3">
+                        <input type="password" asp-for="RModel.Password" class="form-control" id="password" placeholder="Password" oninput="checkPasswordStrength(this.value)" />
+                        <label asp-for="RModel.Password">Password</label>
+                        <span asp-validation-for="RModel.Password" class="text-danger small"></span>
+                    </div>
+                    <div class="password-strength-container mb-3">
+                        <div class="password-strength-bar">
+                            <div id="strengthBar" class="password-strength-fill"></div>
+                        </div>
+                        <small id="strengthText" class="password-strength-text">Enter a password</small>
+                        <div class="password-checklist mt-2">
+                            <div id="chkLength" class="checklist-item"><span class="check-icon">&#10007;</span> At least 12 characters</div>
+                            <div id="chkUpper" class="checklist-item"><span class="check-icon">&#10007;</span> Uppercase letter</div>
+                            <div id="chkLower" class="checklist-item"><span class="check-icon">&#10007;</span> Lowercase letter</div>
+                            <div id="chkDigit" class="checklist-item"><span class="check-icon">&#10007;</span> Number</div>
+                            <div id="chkSpecial" class="checklist-item"><span class="check-icon">&#10007;</span> Special character</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-floating mb-3">
+                        <input type="password" asp-for="RModel.ConfirmPassword" class="form-control" id="confirmPassword" placeholder="Confirm Password" />
+                        <label asp-for="RModel.ConfirmPassword">Confirm Password</label>
+                        <span asp-validation-for="RModel.ConfirmPassword" class="text-danger small"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label" for="photo">Profile Photo</label>
+                <input type="file" asp-for="Photo" class="form-control" id="photo" accept=".jpg,.jpeg,.png,.pdf,.docx" />
+                <small class="text-muted">Allowed: .JPG, .JPEG, .PNG, .PDF, .DOCX (max 2MB)</small>
+                <span asp-validation-for="Photo" class="text-danger small d-block"></span>
+            </div>
+
+            <div class="form-floating mb-4">
+                <textarea asp-for="RModel.AboutMe" class="form-control" id="aboutMe" placeholder="About Me" style="height: 100px"></textarea>
+                <label asp-for="RModel.AboutMe">About Me</label>
+                <small class="text-muted">Tell us a bit about yourself (all special characters allowed)</small>
+                <span asp-validation-for="RModel.AboutMe" class="text-danger small"></span>
+            </div>
+
+            <div class="password-requirements mb-4">
+                <small class="text-muted">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="me-1" viewBox="0 0 16 16">
+                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                        <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+                    </svg>
+                    Password must be at least 12 characters with uppercase, lowercase, digit, and special character.
+                </small>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-lg w-100 mb-3">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="me-2" viewBox="0 0 16 16">
+                    <path d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1h8Zm-7.978-1A.261.261 0 0 1 7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002a.274.274 0 0 1-.014.002H7.022ZM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM6.936 9.28a5.88 5.88 0 0 0-1.23-.247A7.35 7.35 0 0 0 5 9c-4 0-5 3-5 4 0 .667.333 1 1 1h4.216A2.238 2.238 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816ZM4.92 10A5.493 5.493 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275ZM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0Zm3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4Z"/>
+                </svg>
+                Create Membership Account
+            </button>
+        </form>
+
+        <div class="auth-footer">
+            <p>Already have an account? <a asp-page="/Login" class="link-primary">Sign in</a></p>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    @if (!string.IsNullOrEmpty(Model.RecaptchaSiteKey) && !Model.RecaptchaSiteKey.StartsWith("YOUR_"))
+    {
+        <script src="https://www.google.com/recaptcha/api.js?render=@Model.RecaptchaSiteKey"></script>
+        <script>
+            document.getElementById('registerForm').addEventListener('submit', function (e) {
+                e.preventDefault();
+                var form = this;
+                grecaptcha.ready(function () {
+                    grecaptcha.execute('@Model.RecaptchaSiteKey', { action: 'register' }).then(function (token) {
+                        document.getElementById('recaptchaToken').value = token;
+                        form.submit();
+                    });
+                });
+            });
+        </script>
+    }
+
+    <script>
+        function checkPasswordStrength(password) {
+            var hasLength = password.length >= 12;
+            var hasUpper = /[A-Z]/.test(password);
+            var hasLower = /[a-z]/.test(password);
+            var hasDigit = /[0-9]/.test(password);
+            var hasSpecial = /[^A-Za-z0-9]/.test(password);
+
+            updateChecklist('chkLength', hasLength);
+            updateChecklist('chkUpper', hasUpper);
+            updateChecklist('chkLower', hasLower);
+            updateChecklist('chkDigit', hasDigit);
+            updateChecklist('chkSpecial', hasSpecial);
+
+            var score = [hasLength, hasUpper, hasLower, hasDigit, hasSpecial].filter(Boolean).length;
+            var bar = document.getElementById('strengthBar');
+            var text = document.getElementById('strengthText');
+
+            if (password.length === 0) {
+                bar.style.width = '0%';
+                bar.className = 'password-strength-fill';
+                text.textContent = 'Enter a password';
+                text.className = 'password-strength-text';
+                return;
+            }
+
+            if (score <= 2) {
+                bar.style.width = '33%';
+                bar.className = 'password-strength-fill strength-weak';
+                text.textContent = 'Weak';
+                text.className = 'password-strength-text text-danger';
+            } else if (score <= 4) {
+                bar.style.width = '66%';
+                bar.className = 'password-strength-fill strength-medium';
+                text.textContent = 'Medium';
+                text.className = 'password-strength-text text-warning';
+            } else {
+                bar.style.width = '100%';
+                bar.className = 'password-strength-fill strength-strong';
+                text.textContent = 'Strong';
+                text.className = 'password-strength-text text-success';
+            }
+        }
+
+        function updateChecklist(id, passed) {
+            var el = document.getElementById(id);
+            var icon = el.querySelector('.check-icon');
+            if (passed) {
+                el.classList.add('passed');
+                el.classList.remove('failed');
+                icon.innerHTML = '&#10003;';
+            } else {
+                el.classList.remove('passed');
+                el.classList.add('failed');
+                icon.innerHTML = '&#10007;';
+            }
+        }
+    </script>
+}
