@@ -81,10 +81,10 @@ namespace WebApplication1.Pages
                 {
                     // Check file extension
                     var extension = Path.GetExtension(Photo.FileName).ToLowerInvariant();
-                    var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".pdf", ".docx" };
+                    var allowedExtensions = new[] { ".jpg", ".jpeg" };
                     if (!allowedExtensions.Contains(extension))
                     {
-                        ModelState.AddModelError("Photo", "Only .JPG, .JPEG, .PNG, .PDF, and .DOCX files are allowed.");
+                        ModelState.AddModelError("Photo", "Only .JPG files are allowed.");
                         return Page();
                     }
 
@@ -92,10 +92,7 @@ namespace WebApplication1.Pages
                     var allowedMimeTypes = new Dictionary<string, string[]>
                     {
                         { ".jpg", new[] { "image/jpeg" } },
-                        { ".jpeg", new[] { "image/jpeg" } },
-                        { ".png", new[] { "image/png" } },
-                        { ".pdf", new[] { "application/pdf" } },
-                        { ".docx", new[] { "application/vnd.openxmlformats-officedocument.wordprocessingml.document" } }
+                        { ".jpeg", new[] { "image/jpeg" } }
                     };
 
                     if (allowedMimeTypes.ContainsKey(extension) &&
@@ -106,24 +103,15 @@ namespace WebApplication1.Pages
                     }
 
                     // Verify file signature (magic bytes) for images
-                    if (extension == ".jpg" || extension == ".jpeg" || extension == ".png")
+                    if (extension == ".jpg" || extension == ".jpeg")
                     {
                         using var headerStream = Photo.OpenReadStream();
                         var headerBytes = new byte[8];
                         await headerStream.ReadAsync(headerBytes, 0, headerBytes.Length);
 
                         bool validSignature = false;
-                        if (extension == ".jpg" || extension == ".jpeg")
-                        {
-                            // JPEG magic bytes: FF D8 FF
-                            validSignature = headerBytes[0] == 0xFF && headerBytes[1] == 0xD8 && headerBytes[2] == 0xFF;
-                        }
-                        else if (extension == ".png")
-                        {
-                            // PNG magic bytes: 89 50 4E 47
-                            validSignature = headerBytes[0] == 0x89 && headerBytes[1] == 0x50 &&
-                                             headerBytes[2] == 0x4E && headerBytes[3] == 0x47;
-                        }
+                        // JPEG magic bytes: FF D8 FF
+                        validSignature = headerBytes[0] == 0xFF && headerBytes[1] == 0xD8 && headerBytes[2] == 0xFF;
 
                         if (!validSignature)
                         {

@@ -39,13 +39,13 @@ namespace WebApplication1.Pages
             var result = await _userManager.ConfirmEmailAsync(user, token);
             if (result.Succeeded)
             {
-                _logger.LogInformation("Email confirmed for user {Email}", user.Email);
+                _logger.LogInformation("Email confirmed for user {UserId}", user.Id);
                 StatusMessage = "Your email has been confirmed successfully! You can now sign in.";
                 Confirmed = true;
             }
             else
             {
-                _logger.LogWarning("Email confirmation failed for user {Email}", user.Email);
+                _logger.LogWarning("Email confirmation failed for user {UserId}", user.Id);
                 StatusMessage = "Error confirming your email. The link may have expired.";
                 Confirmed = false;
             }

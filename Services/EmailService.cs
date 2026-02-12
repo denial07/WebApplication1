@@ -24,7 +24,7 @@ namespace WebApplication1.Services
             var fromEmail = _configuration["EmailSettings:FromEmail"] ?? smtpUser;
             var fromName = _configuration["EmailSettings:FromName"] ?? "Fresh Farm Market";
 
-            _logger.LogInformation("Attempting to send email to {Email} via {Host}:{Port}", toEmail, smtpHost, smtpPort);
+            _logger.LogInformation("Attempting to send email via {Host}:{Port}", smtpHost, smtpPort);
 
             var message = new MimeMessage();
             message.From.Add(new MailboxAddress(fromName, fromEmail));
@@ -46,14 +46,14 @@ namespace WebApplication1.Services
                 _logger.LogInformation("Authenticated with SMTP server");
 
                 await client.SendAsync(message);
-                _logger.LogInformation("Email sent successfully to {Email}", toEmail);
+                _logger.LogInformation("Email sent successfully");
 
                 await client.DisconnectAsync(true);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Failed to send email to {Email}. Host={Host}, Port={Port}, User={User}, From={From}",
-                    toEmail, smtpHost, smtpPort, smtpUser, fromEmail);
+                _logger.LogError(ex, "Failed to send email. Host={Host}, Port={Port}",
+                    smtpHost, smtpPort);
                 throw;
             }
         }

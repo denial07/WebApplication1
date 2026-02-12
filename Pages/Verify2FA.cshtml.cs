@@ -47,11 +47,11 @@ namespace WebApplication1.Pages
                 return RedirectToPage("Login");
             }
 
-            _logger.LogInformation("Generating 2FA token for user {Email}", user.Email);
+            _logger.LogInformation("Generating 2FA token for user {UserId}", user.Id);
 
             // Generate and send the email token
             var token = await _userManager.GenerateTwoFactorTokenAsync(user, TokenOptions.DefaultEmailProvider);
-            _logger.LogInformation("2FA token generated for {Email}: {Token}", user.Email, token);
+            _logger.LogInformation("2FA token generated for user {UserId}", user.Id);
 
             try
             {
@@ -66,11 +66,11 @@ namespace WebApplication1.Pages
                         </div>
                         <p style='color: #666; font-size: 14px;'>This code will expire in 10 minutes. If you did not request this code, please ignore this email.</p>
                     </div>");
-                _logger.LogInformation("2FA email sent successfully to {Email}", user.Email);
+                _logger.LogInformation("2FA email sent successfully for user {UserId}", user.Id);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Failed to send 2FA email to {Email}", user.Email);
+                _logger.LogError(ex, "Failed to send 2FA email for user {UserId}", user.Id);
                 ErrorMessage = "Failed to send verification email. Please try the Resend button or contact support.";
             }
 
@@ -138,7 +138,7 @@ namespace WebApplication1.Pages
             }
 
             var token = await _userManager.GenerateTwoFactorTokenAsync(user, TokenOptions.DefaultEmailProvider);
-            _logger.LogInformation("Resend: 2FA token generated for {Email}: {Token}", user.Email, token);
+            _logger.LogInformation("Resend: 2FA token generated for user {UserId}", user.Id);
 
             try
             {
@@ -154,12 +154,12 @@ namespace WebApplication1.Pages
                         <p style='color: #666; font-size: 14px;'>This code will expire in 10 minutes.</p>
                     </div>");
 
-                _logger.LogInformation("Resend: 2FA email sent successfully to {Email}", user.Email);
+                _logger.LogInformation("Resend: 2FA email sent successfully for user {UserId}", user.Id);
                 StatusMessage = "A new verification code has been sent to your email.";
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Resend: Failed to send 2FA email to {Email}", user.Email);
+                _logger.LogError(ex, "Resend: Failed to send 2FA email for user {UserId}", user.Id);
                 ErrorMessage = "Failed to resend verification email. Please try again later or contact support.";
             }
 

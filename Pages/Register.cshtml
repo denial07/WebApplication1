@@ -118,8 +118,8 @@
 
             <div class="mb-3">
                 <label class="form-label" for="photo">Profile Photo</label>
-                <input type="file" asp-for="Photo" class="form-control" id="photo" accept=".jpg,.jpeg,.png,.pdf,.docx" />
-                <small class="text-muted">Allowed: .JPG, .JPEG, .PNG, .PDF, .DOCX (max 2MB)</small>
+                <input type="file" asp-for="Photo" class="form-control" id="photo" accept=".jpg,.jpeg" />
+                <small class="text-muted">Allowed: .JPG only (max 2MB)</small>
                 <span asp-validation-for="Photo" class="text-danger small d-block"></span>
             </div>
 
