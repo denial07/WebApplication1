@@ -62,6 +62,23 @@ namespace WebApplication1.Pages
                 return RedirectToPage("/Login");
             }
 
+            // Password aging: force password change if password is older than 1 minute
+            if (user.PasswordLastChanged.HasValue)
+            {
+                var minutesSinceLastChange = (DateTime.UtcNow - user.PasswordLastChanged.Value).TotalMinutes;
+                if (minutesSinceLastChange >= 1)
+                {
+                    TempData["StatusMessage"] = "Your password has expired. Please change your password.";
+                    return RedirectToPage("/ChangePassword");
+                }
+            }
+            else
+            {
+                // If PasswordLastChanged is not set, force a password change
+                TempData["StatusMessage"] = "Your password has expired. Please change your password.";
+                return RedirectToPage("/ChangePassword");
+            }
+
             CurrentUser = user;
             UserEmail = user.Email;
             FullName = user.FullName;

@@ -54,14 +54,15 @@ namespace WebApplication1.Pages
 
             var ipAddress = HttpContext.Connection.RemoteIpAddress?.ToString();
 
-            // Check minimum password age (24 hours)
+            // Check minimum password age (1 minute)
             if (user.PasswordLastChanged.HasValue)
             {
-                var hoursSinceLastChange = (DateTime.UtcNow - user.PasswordLastChanged.Value).TotalHours;
-                if (hoursSinceLastChange < 24)
+                var minutesSinceLastChange = (DateTime.UtcNow - user.PasswordLastChanged.Value).TotalMinutes;
+                if (minutesSinceLastChange < 1)
                 {
+                    var secondsRemaining = Math.Ceiling((1 - minutesSinceLastChange) * 60);
                     ModelState.AddModelError(string.Empty,
-                        $"You can only change your password once every 24 hours. Please try again in {Math.Ceiling(24 - hoursSinceLastChange)} hour(s).");
+                        $"You can only change your password once every 1 minute. Please try again in {secondsRemaining} second(s).");
                     await _auditService.LogPasswordChangeAsync(user.Id, false, ipAddress);
                     return Page();
                 }
