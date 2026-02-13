@@ -17,6 +17,25 @@
             <p class="auth-subtitle">Sign in to your account to continue</p>
         </div>
 
+        @if (HttpContext.Request.Query["reason"] == "another_login")
+        {
+            <div class="alert alert-warning" role="alert">
+                You have been logged out because your account was signed in from another browser or device.
+            </div>
+        }
+        else if (HttpContext.Request.Query["reason"] == "session_timeout")
+        {
+            <div class="alert alert-info" role="alert">
+                Your session has expired due to inactivity. Please sign in again.
+            </div>
+        }
+        else if (HttpContext.Request.Query["reason"] == "lockout")
+        {
+            <div class="alert alert-danger" role="alert">
+                Your account has been locked due to multiple failed login attempts. Please try again later.
+            </div>
+        }
+
         @if (TempData["SuccessMessage"] != null)
         {
             <div class="alert alert-success" role="alert">

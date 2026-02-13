@@ -35,8 +35,25 @@ namespace WebApplication1.Pages
             _dbContext = dbContext;
         }
 
-        public void OnGet()
+        public async Task<IActionResult> OnGet()
         {
+            // Validate session exists
+            var sessionUser = HttpContext.Session.GetString("SessionUser");
+            if (string.IsNullOrEmpty(sessionUser))
+            {
+                await _signInManager.SignOutAsync();
+                return RedirectToPage("/Login", new { reason = "session_timeout" });
+            }
+
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null || sessionUser != user.Id)
+            {
+                await _signInManager.SignOutAsync();
+                HttpContext.Session.Clear();
+                return RedirectToPage("/Login", new { reason = "another_login" });
+            }
+
+            return Page();
         }
 
         public async Task<IActionResult> OnPostAsync()
@@ -114,7 +131,16 @@ namespace WebApplication1.Pages
             await _dbContext.SaveChangesAsync();
 
             await _auditService.LogPasswordChangeAsync(user.Id, true, ipAddress);
+
+            // Invalidate all other sessions after password change
+            await _userManager.UpdateSecurityStampAsync(user);
             await _signInManager.RefreshSignInAsync(user);
+
+            // Re-establish session for current user
+            HttpContext.Session.Clear();
+            HttpContext.Session.SetString("SessionUser", user.Id);
+            HttpContext.Session.SetString("SessionStart", DateTime.UtcNow.ToString("o"));
+
             StatusMessage = "Your password has been changed successfully.";
 
             return RedirectToPage("Dashboard");

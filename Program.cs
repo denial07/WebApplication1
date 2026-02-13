@@ -43,6 +43,44 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.LoginPath = "/Login";
     options.LogoutPath = "/Logout";
     options.AccessDeniedPath = "/Error";
+
+    // Wrap the security stamp validator to detect when a cookie is rejected
+    // due to a security stamp change (i.e., another login invalidated this session)
+    var originalValidator = options.Events.OnValidatePrincipal;
+    options.Events.OnValidatePrincipal = async context =>
+    {
+        var wasAuthenticated = context.Principal?.Identity?.IsAuthenticated == true;
+        if (originalValidator != null)
+        {
+            await originalValidator(context);
+        }
+        // If user WAS authenticated but principal was rejected → security stamp changed
+        if (wasAuthenticated && context.Principal == null)
+        {
+            context.HttpContext.Items["RejectedBySecurityStamp"] = true;
+        }
+    };
+
+    // Determine the correct reason for redirect and inform the user
+    options.Events.OnRedirectToLogin = context =>
+    {
+        if (context.Request.Path != "/Login" && !context.RedirectUri.Contains("reason="))
+        {
+            if (context.HttpContext.Items.ContainsKey("RejectedBySecurityStamp"))
+            {
+                // Security stamp changed → definitively another login
+                context.RedirectUri += (context.RedirectUri.Contains('?') ? "&" : "?") + "reason=another_login";
+            }
+            else if (context.Request.Cookies.ContainsKey(".AspNetCore.Identity.Application"))
+            {
+                // Auth cookie present but not stamp-rejected → ticket expired (session timeout)
+                context.RedirectUri += (context.RedirectUri.Contains('?') ? "&" : "?") + "reason=session_timeout";
+            }
+            // If no cookie at all → user wasn't logged in, no message needed
+        }
+        context.Response.Redirect(context.RedirectUri);
+        return Task.CompletedTask;
+    };
 });
 
 // Validate security stamp frequently to enforce single-session policy
@@ -50,13 +88,13 @@ builder.Services.ConfigureApplicationCookie(options =>
 // invalidating the cookie on the first device within this interval.
 builder.Services.Configure<SecurityStampValidatorOptions>(options =>
 {
-    options.ValidationInterval = TimeSpan.FromMinutes(1);
+    options.ValidationInterval = TimeSpan.FromSeconds(15);
 });
 
 // Session management
 builder.Services.AddSession(options =>
 {
-    options.IdleTimeout = TimeSpan.FromMinutes(1);
+    options.IdleTimeout = TimeSpan.FromMinutes(30);
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
     options.Cookie.SecurePolicy = CookieSecurePolicy.Always;

@@ -45,7 +45,7 @@ namespace WebApplication1.Pages
             if (string.IsNullOrEmpty(sessionUser))
             {
                 await _signInManager.SignOutAsync();
-                return RedirectToPage("/Login");
+                return RedirectToPage("/Login", new { reason = "session_timeout" });
             }
 
             var user = await _userManager.GetUserAsync(User);
@@ -59,26 +59,8 @@ namespace WebApplication1.Pages
             {
                 await _signInManager.SignOutAsync();
                 HttpContext.Session.Clear();
-                return RedirectToPage("/Login");
+                return RedirectToPage("/Login", new { reason = "another_login" });
             }
-
-            // Password aging: force password change if password is older than 1 minute
-            if (user.PasswordLastChanged.HasValue)
-            {
-                var minutesSinceLastChange = (DateTime.UtcNow - user.PasswordLastChanged.Value).TotalMinutes;
-                if (minutesSinceLastChange >= 1)
-                {
-                    TempData["StatusMessage"] = "Your password has expired. Please change your password.";
-                    return RedirectToPage("/ChangePassword");
-                }
-            }
-            else
-            {
-                // If PasswordLastChanged is not set, force a password change
-                TempData["StatusMessage"] = "Your password has expired. Please change your password.";
-                return RedirectToPage("/ChangePassword");
-            }
-
             CurrentUser = user;
             UserEmail = user.Email;
             FullName = user.FullName;
